@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import logo from './japan.svg';
-import lotion from './fuckingpicture.jpg';
+import lotion from './ineedtobemorecarefulwithmyfilenames.jpg';
 import './App.css';
 
 class App extends Component {
