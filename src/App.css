@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  margin-bottom: 1.875em;
 }
 
 .App-logo {
@@ -19,16 +20,23 @@
   width: 90px;
 }
 
+.frick {
+  padding-top: 1em;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+
 .App-header {
   background-color: #222;
-  height: 150px;
-  padding-top: 2em;
+  height: auto;
+  padding-bottom: 0.5em;
   color: white;
+  position: relative;
 }
 
 .App-title {
   font-size: 1.5em;
-  padding-top: .5em;
+  padding-top: 0.5em;
 }
 
 .App-intro {
@@ -56,4 +64,25 @@
   100% {
     height: 60px;
   }
+}
+
+/* The navigation bar */
+.navbar {
+    position: fixed; /* Set the navbar to fixed position */
+    bottom: 0; /* Position the navbar at the bottom of the page */
+    width: auto;/* Full width */
+    right: 0;
+    background-color: #222;
+    padding: 5px;
+    border-radius: 5px 0 0 0;
+    cursor: pointer;
+}
+
+.navbar:hover {
+    background-color: #494949;
+}
+
+.lang-logo {
+  height: 20px;
+  padding: 5px 0px 0px 5px;
 }
