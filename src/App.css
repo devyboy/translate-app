@@ -3,9 +3,20 @@
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 3s linear;
-  height: 60px;
-  padding-bottom: 0em;
+  /*animation: App-logo-spin infinite 3s linear;*/
+  height: 50px;
+  margin: 10px;
+}
+
+.heart {
+  height: 50px;
+  margin-left: 20px;
+  margin-right: 20px;
+  animation: heart-pulse infinite .7s alternate;
+}
+
+#amerikuh {
+  width: 90px;
 }
 
 .App-header {
@@ -22,6 +33,10 @@
 
 .App-intro {
   font-size: large;
+  background-color: lightgrey;
+  border-radius: 10px;
+  margin: 20px 20px 20px 20px;
+  padding: 10px 10px 10px 10px;
 }
 
 .Lotion-picture {
@@ -32,4 +47,13 @@
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+@keyframes heart-pulse {
+  0% {
+    height: 50px;
+  }
+  100% {
+    height: 60px;
+  }
 }
