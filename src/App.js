@@ -10,7 +10,7 @@ import './App.css';
 import { animateScroll as scroll } from 'react-scroll';
 
 import translate from './modules/translate/src/index.js';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
+import { Button, DropdownButton, MenuItem, Glyphicon } from 'react-bootstrap';
 
 translate.engine = 'yandex';
 translate.key = 'trnsl.1.1.20180410T212010Z.38d52b4f48bd4d51.a3d45adb4f82949b168d39ca99dd118a6520a870';
@@ -25,15 +25,14 @@ class App extends Component {
           //["Hello! We are Nihongo Table, a club on campus that is centered around Japan and Japanese culture.", true],
           ["Select a language above to start translating!", true]
       ],
-      Hindi: false,
-      Hebrew: false,
-      Russian: false,
       languages: [
         "Hindi",
         "Hebrew",
         "Russian",
+        "English"
       ],
-      currentLang: 'None',
+      currentToLang: 'None',
+      currentFromLang: 'English',
       enabled: false,
     };
 
@@ -57,17 +56,34 @@ class App extends Component {
       this.setState({ value: ''})
       scroll.scrollToBottom({duration: 200});
       const text = this.state.value;
-      let transCode = '';
-      if (this.state.currentLang === "Hindi") {
-        transCode = "hi";
+      let fromCode = '';
+      let toCode = '';
+      if (this.state.currentToLang === "Hindi") {
+        toCode = "hi";
       }
-      else if (this.state.currentLang === "Hebrew") {
-        transCode = "he";
+      else if (this.state.currentToLang === "Hebrew") {
+        toCode = "he";
       }
-      else if (this.state.currentLang === "Russian") {
-        transCode = "ru";
+      else if (this.state.currentToLang === "Russian") {
+        toCode = "ru";
       }
-      const translated = await translate(text, {to: transCode });
+      else if (this.state.currentToLang === "English") {
+        toCode = "en";
+      }
+
+      if (this.state.currentFromLang === "Hindi") {
+        fromCode = "hi";
+      }
+      else if (this.state.currentFromLang === "Hebrew") {
+        fromCode = "he";
+      }
+      else if (this.state.currentFromLang === "Russian") {
+        fromCode = "ru";
+      }
+      else if (this.state.currentFromLang === "English") {
+        fromCode = "en";
+      }
+      const translated = await translate(text, {from: fromCode, to: toCode }).catch(() => "There was a problem translating. Please try again at a later time.");
       this.state.messages.push([translated, true]);
       scroll.scrollToBottom();
       this.forceUpdate();
@@ -75,7 +91,7 @@ class App extends Component {
   }
 
   resetShit() {
-    let message = "Type something below for me to translate it to " + this.state.currentLang + ".";
+    let message = "Type something below for me to translate it to " + this.state.currentToLang + " from " + this.state.currentFromLang + ".";
     this.setState({ messages: [message] });
     this.forceUpdate();
   }
@@ -86,15 +102,36 @@ class App extends Component {
     }
   }
 
-  determineFlag() {
-    if (this.state.currentLang === "Hindi") {
+  determineFlag2() {
+    if (this.state.currentToLang === "Hindi") {
       return india;
     }
-    else if (this.state.currentLang === "Hebrew") {
+    else if (this.state.currentToLang === "Hebrew") {
       return israel;
     }
-    else if (this.state.currentLang === "Russian") {
+    else if (this.state.currentToLang === "Russian") {
       return russia;
+    }
+    else if (this.state.currentToLang === "English") {
+      return usa;
+    }
+    else {
+      return question;
+    }
+  }
+
+  determineFlag1() {
+    if (this.state.currentFromLang === "Hindi") {
+      return india;
+    }
+    else if (this.state.currentFromLang === "Hebrew") {
+      return israel;
+    }
+    else if (this.state.currentFromLang === "Russian") {
+      return russia;
+    }
+    else if (this.state.currentFromLang === "English") {
+      return usa;
     }
     else {
       return question;
@@ -115,7 +152,15 @@ class App extends Component {
   renderEverything() {
     const listLangs = this.state.languages.map((language) => {
       return (
-        <MenuItem style={{ fontSize: '1.5em'}} onClick={() => {this.setState({ currentLang: language, enabled: true}); this.state.messages.push(["Language changed to " + language + ".", true]); scroll.scrollToBottom({duration: 250})}}>
+        <MenuItem style={{ fontSize: '1.5em'}} onClick={() => {this.setState({ currentFromLang: language, enabled: true}); this.state.messages.push(["Translating to " + this.state.currentToLang + " from " + language + ".", true]); this.forceUpdate(); scroll.scrollToBottom({duration: 250})}}>
+          {language}
+        </MenuItem>
+      );
+    });
+
+    const listLangs2 = this.state.languages.map((language) => {
+      return (
+        <MenuItem style={{ fontSize: '1.5em'}} onClick={() => {this.setState({ currentToLang: language, enabled: true}); this.state.messages.push(["Translating to " + language + " from " + this.state.currentFromLang + ".", true]); this.forceUpdate(); scroll.scrollToBottom({duration: 250})}}>
           {language}
         </MenuItem>
       );
@@ -156,12 +201,18 @@ class App extends Component {
               <h1 className="App-title">
                 Welcome to the Translator App
               </h1>
-              <img src={this.determineFlag()} className="App-logo" alt="country-flag" />
+              <img src={this.determineFlag1()} className="App-logo" alt="country-flag" />
               <img src={heart} onClick={() => this.resetShit()} className="heart" alt="heart" />
-              <img src={usa} id="amerikuh" className="App-logo" alt="american-flag" />
+              <img src={this.determineFlag2()} className="App-logo" alt="american-flag" />
             </div>
-            <DropdownButton style={{ marginBottom: '1em', fontSize: '1.5em' }} bsStyle="success" title={this.state.currentLang}>
+            <DropdownButton style={{ marginBottom: '1em', fontSize: '1.5em' }} bsStyle="success" title={this.state.currentFromLang}>
               {listLangs}
+            </DropdownButton>
+            <Button bsStyle="primary" onClick={() => {let tmp = this.state.currentToLang; this.setState({currentToLang: this.state.currentFromLang}); this.setState({currentFromLang: tmp}); this.state.messages.push(["Languages switched.", true]); scroll.scrollToBottom();}} style={{ marginBottom: '1.25em', marginLeft: "1em", marginRight: '1em' }}>
+              <Glyphicon glyph="refresh"/>
+            </Button>
+            <DropdownButton style={{ marginBottom: '1em', fontSize: '1.5em' }} bsStyle="success" title={this.state.currentToLang}>
+              {listLangs2}
             </DropdownButton>
           </div>
           <div className="messages-container">

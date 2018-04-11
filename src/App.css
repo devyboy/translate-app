@@ -52,15 +52,6 @@
   font-size: 1em;
 }
 
-
-#amerikuh {
-  width: 90px;
-  margin: 10px 20px 10px 20px;
-  animation: fade-in 1s;
-  animation-delay: 1s;
-  animation-fill-mode: backwards;
-}
-
 .frick {
   padding-top: 1em;
   padding-bottom: 1em;
