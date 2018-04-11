@@ -216,7 +216,7 @@ class App extends Component {
           <div className="App-header">
             <div className="frick">
               <h1 className="App-title">
-                Welcome to the Translator App
+                Click the heart to clear messages
               </h1>
               <img src={this.determineFlag1()} className="App-logo" alt="country-flag" />
               <img src={heart} onClick={() => this.resetShit()} className="heart" alt="heart" />
