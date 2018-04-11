@@ -2,7 +2,7 @@
 React web app that translates various languages back and forth. Has no backend and is built strictly with React.js. Mostly a fun project to play around with pushing to message arrays.
 
 ## Screenshots
-https://imgur.com/1qnXJjq
+https://i.imgur.com/1qnXJjq.png
 
 ## Installation
 **1**. Clone the repository and install the required node modules.
