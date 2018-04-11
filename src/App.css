@@ -1,29 +1,91 @@
 .App {
   text-align: center;
-  margin-bottom: 1.875em;
+  margin-bottom: 4em;
 }
+
+*:focus {
+    outline: none;
+}
+
 
 .App-logo {
   /*animation: App-logo-spin infinite 3s linear;*/
-  height: 50px;
-  margin: 10px;
+  width: 65px;
+  margin: 10px 20px 10px 20px;
+  animation: fade-in 1s;
+  animation-delay: 1s;
+  animation-fill-mode: backwards;
+}
+
+.button-toolbar {
+  margin-top: 1em;
+  display: flex;
+  justify-content: center;
 }
 
 .heart {
   height: 50px;
   margin-left: 20px;
   margin-right: 20px;
-  animation: heart-pulse infinite .7s alternate;
+  animation: heart-pulse infinite 1s alternate, fade-in 1s;;
+  margin: 0;
+  animation-delay: 1s;
+  animation-fill-mode: backwards;
 }
+
+.messages-container {
+  width: 42em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.message {
+  height: 30px;
+  width: 35em;
+  border-radius: 50px;
+  border-style: solid;
+  border-width: 0px;
+  padding-left: 1em;
+  margin-right: 1em;
+  display: inline-block;
+  background-color: #ededed;
+  font-size: 1em;
+}
+
 
 #amerikuh {
   width: 90px;
+  margin: 10px 20px 10px 20px;
+  animation: fade-in 1s;
+  animation-delay: 1s;
+  animation-fill-mode: backwards;
 }
 
 .frick {
   padding-top: 1em;
+  padding-bottom: 1em;
   top: 0; left: 0;
   width: 100%; height: 100%;
+  user-select: none;
+}
+
+.fromUser {
+  color: white;
+  background-color: #0dd80d;
+  border-radius: 20px 0px 20px 20px;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  padding-left: .75em;
+  padding-right: .75em;
+  margin-right: 5%;
+  margin-left: 20%;
+  margin-top: .75em;
+  font-size: large;
+  width: auto;
+  height: auto%;
+  display: inline-block;
+  float: right;
+  text-align: left;
 }
 
 .App-header {
@@ -32,25 +94,51 @@
   padding-bottom: 0.5em;
   color: white;
   position: relative;
+  z-index: 0;
 }
 
 .App-title {
   font-size: 1.5em;
-  padding-top: 0.5em;
+  animation: fade-in 1s;
 }
 
 .App-intro {
-  font-size: large;
   background-color: lightgrey;
-  border-radius: 10px;
-  margin: 20px 20px 20px 20px;
-  padding: 10px 10px 10px 10px;
+  border-radius: 0px 20px 20px 20px;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  padding-left: .75em;
+  padding-right: .75em;
+  margin-right: 20%;
+  margin-left: 5%;
+  margin-top: 1em;
+  font-size: large;
+  width: auto;
+  height: auto%;
+  display: inline-block;
+  float: left;
+  text-align: left;
 }
 
-.Lotion-picture {
-  height: auto;
-  width: 400px;
+.App-intro-last {
+  background-color: lightgrey;
+  border-radius: 0px 20px 20px 20px;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  padding-left: .75em;
+  padding-right: .75em;
+  margin-right: 20%;
+  margin-left: 5%;
+  margin-top: 1em;
+  margin-bottom: 8em;
+  font-size: large;
+  width: auto;
+  height: auto%;
+  display: inline-block;
+  float: left;
+  text-align: left;
 }
+
 
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
@@ -66,16 +154,24 @@
   }
 }
 
-/* The navigation bar */
-.navbar {
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.navbar2 {
     position: fixed; /* Set the navbar to fixed position */
-    bottom: 0; /* Position the navbar at the bottom of the page */
-    width: auto;/* Full width */
-    right: 0;
-    background-color: #222;
-    padding: 5px;
-    border-radius: 5px 0 0 0;
-    cursor: pointer;
+    width: 100%;/* Full width */
+    bottom: 0px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1em;
+    user-select: none;
+    -moz-user-select: none;
 }
 
 .navbar:hover {
@@ -84,5 +180,5 @@
 
 .lang-logo {
   height: 20px;
-  padding: 5px 0px 0px 5px;
+  padding: 5px 0px 0px 0px;
 }
