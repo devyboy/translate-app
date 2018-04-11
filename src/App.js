@@ -69,6 +69,7 @@ class App extends Component {
       }
       const translated = await translate(text, {to: transCode });
       this.state.messages.push([translated, true]);
+      scroll.scrollToBottom();
       this.forceUpdate();
     }
   }
