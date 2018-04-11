@@ -22,7 +22,6 @@ class App extends Component {
       english: true,
       value: '',
       messages: [
-          //["Hello! We are Nihongo Table, a club on campus that is centered around Japan and Japanese culture.", true],
           ["Select a language above to start translating!", true]
       ],
       languages: [
@@ -36,6 +35,8 @@ class App extends Component {
       enabled: false,
     };
 
+    // Binding functions
+
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.resetShit = this.resetShit.bind(this);
@@ -43,22 +44,26 @@ class App extends Component {
 
   }
 
+  // Handles text box input. When the value is changed, puts the new value into this.state.value
+
   handleChange(event) {
     this.setState({ value: event.target.value });
   }
 
+  // Handles submitting the text and translating it.
+
   async handleSubmit(event) {
     event.preventDefault();
-    if (this.state.value === '') {
+    if (this.state.value === '') {  // If the input is empty, don't do anything
     }
     else {
-      this.state.messages.push([this.state.value, false]);
-      this.setState({ value: ''})
-      scroll.scrollToBottom({duration: 200});
-      const text = this.state.value;
-      let fromCode = '';
+      this.state.messages.push([this.state.value, false]); // Else, push what the user typed to the message array in this.state.messages. The boolean value determines if the message is sent from the user or the app.
+      this.setState({ value: ''}) // Empty the text box
+      scroll.scrollToBottom({duration: 200}); // Scroll to the bottom of the page to show the newest message
+      const text = this.state.value; // Get the text from the box and put it into a variable
+      let fromCode = ''; // Determining which languages to translate from and to
       let toCode = '';
-      if (this.state.currentToLang === "Hindi") {
+      if (this.state.currentToLang === "Hindi") { // currenLang is set when the user selects a language from the dropdown menus below
         toCode = "hi";
       }
       else if (this.state.currentToLang === "Hebrew") {
@@ -83,24 +88,26 @@ class App extends Component {
       else if (this.state.currentFromLang === "English") {
         fromCode = "en";
       }
+
+      // Using the npm package called translate which uses a promise function that takes the text to be translated,-
+      // the code for the origin and target languages. If there are any errors, the catch statement turns the message into a generic error
+
       const translated = await translate(text, {from: fromCode, to: toCode }).catch(() => "There was a problem translating. Please try again at a later time.");
-      this.state.messages.push([translated, true]);
+      this.state.messages.push([translated, true]); // Push the message to the message array, this time true because it's from the app
       scroll.scrollToBottom();
-      this.forceUpdate();
+      this.forceUpdate(); // Force an update to show the new changes
     }
   }
+
+  // Resets the chat and clears all the messages
 
   resetShit() {
     let message = "Type something below for me to translate it to " + this.state.currentToLang + " from " + this.state.currentFromLang + ".";
-    this.setState({ messages: [message] });
+    this.setState({ messages: [message] }); // Instead of pushing a message to the array, it resets the array because we just want it to display one message.
     this.forceUpdate();
   }
 
-  determineStyle(button) {
-    if (this.state[button]) {
-      return "success";
-    }
-  }
+  // Small helper function to determine which flags to display at the top. Returns a variable that references an svg in the images directory.
 
   determineFlag2() {
     if (this.state.currentToLang === "Hindi") {
@@ -116,9 +123,11 @@ class App extends Component {
       return usa;
     }
     else {
-      return question;
+      return question; // If no country is specified, use a question mark
     }
   }
+
+  // Same as above but for the first flag
 
   determineFlag1() {
     if (this.state.currentFromLang === "Hindi") {
@@ -138,6 +147,8 @@ class App extends Component {
     }
   }
 
+  // Determines the placeholder text for the input at the bottom. The text tells the user to select a language before they can start. When a user selects a language, this.state.enabled gets set to true and the placeholder changes
+
   determinePlaceholder() {
     if (!this.state.enabled) {
       return "Please select a language first.";
@@ -148,16 +159,20 @@ class App extends Component {
   }
 
 
+  // Renders all the site content
+
 
   renderEverything() {
-    const listLangs = this.state.languages.map((language) => {
+    const listLangs = this.state.languages.map((language) => { // For the first dropdown. Takes the array of languages in the state with the language as a parameter, and returns an array of MenuItems in the listLangs variable for the dropdown menus.
       return (
+        // When the menu item with the language is clicked, the currentFromLang is set to that language, the text box is enabled, a message notifying the user of the change is pushed to the screen, and the screen is scrolled down to show it.
         <MenuItem style={{ fontSize: '1.5em'}} onClick={() => {this.setState({ currentFromLang: language, enabled: true}); this.state.messages.push(["Translating to " + this.state.currentToLang + " from " + language + ".", true]); this.forceUpdate(); scroll.scrollToBottom({duration: 250})}}>
           {language}
         </MenuItem>
       );
     });
 
+    // Same as above except for the second dropdown box and sets the currentToLang
     const listLangs2 = this.state.languages.map((language) => {
       return (
         <MenuItem style={{ fontSize: '1.5em'}} onClick={() => {this.setState({ currentToLang: language, enabled: true}); this.state.messages.push(["Translating to " + language + " from " + this.state.currentFromLang + ".", true]); this.forceUpdate(); scroll.scrollToBottom({duration: 250})}}>
@@ -166,17 +181,19 @@ class App extends Component {
       );
     });
 
+    // This function takes in the array of messages and turns them into the actual messages on the screen by sending them to the Card component
+
     const listItems = this.state.messages.map((message, index) => {
-      if (message[1]) {
-        if (index === this.state.messages[this.state.messages.length - 1]) {
-          let props = { text: message, class: 'App-intro-last' };
-          return (
+      if (message[1]) { // If the message's second parameter is true, that means it's from the computer
+        if (index === this.state.messages[this.state.messages.length - 1]) { // If it's the last message in the array...
+          let props = { text: message, class: 'App-intro-last' }; // ...give it a different style which pretty much adds more margin on the bottom so it's not covered by the text box at the bottom.
+          return ( // Set a variable called props to hold the message and the class, when it's sent to Card.js
             <Card>
               {props}
             </Card>);
         }
         else {
-          let props = { text: message, class: 'App-intro' };
+          let props = { text: message, class: 'App-intro' }; // If it isn't the last message but is still from the app and not the user, just make it come from the left and be grey
           return (
             <Card>
               {props}
@@ -184,7 +201,7 @@ class App extends Component {
         }
       }
       else {
-        let props = { text: message, class: 'fromUser' };
+        let props = { text: message, class: 'fromUser' }; // Else, if the message is from the user and not the app, make it green and coming from the right
         return (
           <Card>
             {props}
@@ -208,7 +225,7 @@ class App extends Component {
             <DropdownButton style={{ marginBottom: '1em', fontSize: '1.5em' }} bsStyle="success" title={this.state.currentFromLang}>
               {listLangs}
             </DropdownButton>
-            <Button bsStyle="primary" onClick={() => {let tmp = this.state.currentToLang; this.setState({currentToLang: this.state.currentFromLang}); this.setState({currentFromLang: tmp}); this.state.messages.push(["Languages switched.", true]); scroll.scrollToBottom();}} style={{ marginBottom: '1.25em', marginLeft: "1em", marginRight: '1em' }}>
+            <Button bsStyle="primary" onClick={() => {let tmp = this.state.currentToLang; this.setState({currentToLang: this.state.currentFromLang}); this.setState({currentFromLang: tmp}); this.state.messages.push(["Languages switched.", true]); scroll.scrollToBottom();}} style={{ marginBottom: "1.25em", marginLeft: "1em", marginRight: '1em' }}>
               <Glyphicon glyph="refresh"/>
             </Button>
             <DropdownButton style={{ marginBottom: '1em', fontSize: '1.5em' }} bsStyle="success" title={this.state.currentToLang}>
