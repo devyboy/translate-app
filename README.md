@@ -1,4 +1,4 @@
-# translate-app (Work In Progress)
+# translate-app
 React web app that translates various languages back and forth. Has no backend and is built strictly with React.js. Mostly a fun project to play around with pushing to message arrays.
 
 ## Screenshots
